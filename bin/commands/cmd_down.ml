@@ -6,7 +6,7 @@ let run ~source ~database = Omigrate.down ~source ~database |> Lwt_main.run
 
 open Cmdliner
 
-let doc = "Apply all down migrations"
+let doc = "Apply all down migrations."
 
 let sdocs = Manpage.s_common_options
 

@@ -6,7 +6,7 @@ let run ~database = Omigrate.drop ~database |> Lwt_main.run
 
 open Cmdliner
 
-let doc = "Delete the database"
+let doc = "Delete the database."
 
 let sdocs = Manpage.s_common_options
 

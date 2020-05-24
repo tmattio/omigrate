@@ -1,13 +1,12 @@
 # OCaml Migrate
 
 [![Actions Status](https://github.com/tmattio/omigrate/workflows/CI/badge.svg)](https://github.com/tmattio/omigrate/actions)
-[![NPM Version](https://badge.fury.io/js/%40tmattio%2Fomigrate.svg)](https://badge.fury.io/js/%40tmattio%2Fomigrate)
 
 Database migrations for Reason and OCaml
 
-## Features
+## Drivers
 
-- Available on all major platform (Windows, Linux and Windows)
+- PosgreSQL (`omigrate.postgres`)
 
 ## Installation
 
@@ -17,25 +16,37 @@ Database migrations for Reason and OCaml
 opam install omigrate
 ```
 
-### Using npm
+### Using Esy
 
 ```bash
-yarn global add @tmattio/omigrate
-# Or
-npm -g install @tmattio/omigrate
-```
-
-### Using a script
-
-```bash
-curl -fsSL https://github.com/tmattio/omigrate/raw/master/script/install.sh | bash
+esy add @opam/omigrate
 ```
 
 ## Usage
 
-### `omigrate hello NAME`
+### `omigrate create --dir DIR NAME`
 
-Greets the name given in argument.
+Create a new migration and prepend it with a timestamp.
+
+### `omigrate ls --source SOURCE --database DATABASE`
+
+List the migrations with their state.
+
+### `omigrate up --source SOURCE --database DATABASE`
+
+Apply all up migrations.
+
+### `omigrate down --source SOURCE --database DATABASE`
+
+Apply all down migrations.
+
+### `omigrate setup --source SOURCE --database DATABASE`
+
+Setup the database and run all the migrations.
+
+### `omigrate drop --database DATABASE`
+
+Delete the database.
 
 ## Contributing
 

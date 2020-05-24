@@ -8,8 +8,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        ocaml-version: ['4.09.0', '4.08.1']
+        os: [ubuntu-latest]
+        ocaml-version: ['4.10.0']
     steps:
       - uses: avsm/setup-ocaml@master
         with:
@@ -31,6 +31,3 @@ jobs:
 
       - name: Check formatting
         run: make format
-
-      - name: Run tests
-        run: make test

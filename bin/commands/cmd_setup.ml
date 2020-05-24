@@ -10,7 +10,7 @@ let run ~source ~database =
 
 open Cmdliner
 
-let doc = "Setup the database and run all the migrations."
+let doc = "Create the database and run all the migrations."
 
 let sdocs = Manpage.s_common_options
 

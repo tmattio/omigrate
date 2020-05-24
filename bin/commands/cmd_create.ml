@@ -27,7 +27,7 @@ let run ~dir ~name =
 
 open Cmdliner
 
-let doc = "Create a new migration and prepend it with the current timestamp."
+let doc = "Create a new migration and prepend it with a timestamp."
 
 let sdocs = Manpage.s_common_options
 
@@ -39,7 +39,7 @@ let man =
   [ `S Manpage.s_description
   ; `P
       "$(tname) generates a new up and down migration in the given source and \
-       prepends the name of the migrations with the current timestamp."
+       prepends the name of the migrations with a timestamp."
   ]
 
 let info = Term.info "create" ~doc ~sdocs ~exits ~envs ~man
