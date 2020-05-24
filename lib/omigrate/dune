@@ -1,0 +1,8 @@
+(library
+ (name omigrate)
+ (public_name omigrate)
+ (libraries uri lwt logs.lwt)
+ (flags
+  (:standard -open StdLabels)))
+
+(include_subdirs unqualified)
