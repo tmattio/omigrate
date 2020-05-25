@@ -8,7 +8,7 @@ module Local_dir = struct
       let version = hd in
       let rest =
         String.sub
-        basename
+          basename
           ~pos:(String.length hd + 1)
           ~len:(String.length basename - (String.length hd + 1))
       in
