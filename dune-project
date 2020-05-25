@@ -5,6 +5,8 @@
 (source
  (github tmattio/omigrate))
 
+(documentation "https://tmattio.github.io/omigrate/")
+
 (license MIT)
 
 (authors "Thibaut Mattio")

@@ -6,6 +6,7 @@ maintainer: ["Thibaut Mattio"]
 authors: ["Thibaut Mattio"]
 license: "MIT"
 homepage: "https://github.com/tmattio/omigrate"
+doc: "https://tmattio.github.io/omigrate/"
 bug-reports: "https://github.com/tmattio/omigrate/issues"
 depends: [
   "ocaml" {>= "4.08.0"}
