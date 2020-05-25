@@ -16,6 +16,8 @@ depends: [
   "cmdliner"
   "logs"
   "fmt"
+  "pgx"
+  "pgx_lwt_unix"
 ]
 build: [
   ["dune" "subst"] {pinned}

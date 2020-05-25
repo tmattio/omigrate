@@ -28,18 +28,7 @@
   uri
   cmdliner
   logs
-  fmt))
-
-(package
- (name omigrate.postgres)
- (synopsis "Postgres driver for OCaml Migrate")
- (description "Postgres driver for OCaml Migrate")
- (depends
-  (ocaml
-   (>= 4.08.0))
-  (dune
-   (>= 2.0))
-  (lwt
-   (>= 5.3.0))
+  fmt
+  ; Postgres Driver
   pgx
   pgx_lwt_unix))
