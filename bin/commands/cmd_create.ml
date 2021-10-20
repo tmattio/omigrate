@@ -10,7 +10,7 @@ let run ~dir ~name =
     Printf.sprintf
       "%d%02d%02d%02d%02d%02d"
       (1900 + tm.Unix.tm_year)
-      tm.Unix.tm_mon
+      (1 + tm.Unix.tm_mon)
       tm.Unix.tm_mday
       tm.Unix.tm_hour
       tm.Unix.tm_min
