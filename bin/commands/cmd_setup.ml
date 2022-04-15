@@ -11,21 +11,19 @@ let run ~source ~database =
 open Cmdliner
 
 let doc = "Create the database and run all the migrations."
-
 let sdocs = Manpage.s_common_options
-
 let exits = Common.exits
-
 let envs = Common.envs
 
 let man =
-  [ `S Manpage.s_description
-  ; `P
+  [
+    `S Manpage.s_description;
+    `P
       "$(tname) creates the database if it does not exist, and run all up \
-       migrations."
+       migrations.";
   ]
 
-let info = Term.info "setup" ~doc ~sdocs ~exits ~envs ~man
+let info = Cmd.info "setup" ~doc ~sdocs ~exits ~envs ~man
 
 let term =
   let open Common.Let_syntax in
@@ -34,4 +32,4 @@ let term =
   and+ database = Common.database_arg in
   run ~source ~database |> Common.handle_errors
 
-let cmd = term, info
+let cmd = Cmd.v info term

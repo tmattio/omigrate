@@ -22,13 +22,11 @@
  (depends
   (ocaml
    (>= 4.08.0))
-  (dune
-   (>= 2.0))
-  (odoc :with-doc)
   (lwt
    (>= 5.3.0))
   uri
-  cmdliner
+  (cmdliner
+   (>= 1.1.0))
   logs
   fmt
   ; Postgres Driver

@@ -3,6 +3,5 @@
  (public_name omigrate.postgres)
  (libraries omigrate logs pgx pgx_lwt_unix)
  (modules postgres)
- (wrapped false)
  (flags
-  (:standard -open StdLabels -linkall)))
+  (:standard -linkall)))

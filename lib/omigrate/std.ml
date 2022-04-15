@@ -3,7 +3,6 @@ module Result = struct
 
   module Infix = struct
     let ( >>| ) t f = map f t
-
     let ( >>= ) t f = bind t f
   end
 
@@ -11,11 +10,10 @@ module Result = struct
     open Infix
 
     let ( let+ ) = ( >>| )
-
     let ( let* ) = ( >>= )
 
     let ( and+ ) a b =
       a >>= fun a ->
-      b >>| fun b -> a, b
+      b >>| fun b -> (a, b)
   end
 end

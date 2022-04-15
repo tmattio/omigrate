@@ -1,15 +1,10 @@
-ifeq (start,$(firstword $(MAKECMDGOALS)))
-  START_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
-  $(eval $(START_ARGS):;@:)
-endif
-
 .PHONY: all
 all:
 	opam exec -- dune build @install
 
 .PHONY: dev
 dev:
-	opam install -y dune-release merlin ocamlformat utop
+	opam install -y dune-release ocamlformat ocaml-lsp-server
 	opam install --deps-only --with-test --with-doc -y .
 
 .PHONY: build
@@ -18,7 +13,7 @@ build:
 
 .PHONY: start
 start: all
-	opam exec -- dune exec bin/main.exe $(START_ARGS)
+	opam exec -- dune exec bin/main.exe
 
 .PHONY: install
 install:
@@ -26,7 +21,7 @@ install:
 
 .PHONY: test
 test:
-	opam exec -- dune build @test/runtest -f
+	opam exec -- dune build @test/runtest
 
 .PHONY: clean
 clean:
@@ -51,7 +46,3 @@ watch:
 .PHONY: utop
 utop:
 	opam exec -- dune utop lib -- -implicit-bindings
-
-.PHONY: release
-release:
-	opam exec -- sh script/release.sh
