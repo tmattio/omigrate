@@ -1,4 +1,7 @@
 module T = struct
+  let default_user = "postgres"
+  let default_password = "postgres"
+  let default_port = 5432
   let migrations_table = "schema_migrations"
   let quote_statement s = "\"" ^ s ^ "\""
 
@@ -11,7 +14,8 @@ module T = struct
       ^ "(version bigint NOT NULL, dirty boolean NOT NULL, CONSTRAINT \
          schema_migrations_pkey PRIMARY KEY (version));")
 
-  let with_conn ~host ~port ~user ~password ?database f =
+  let with_conn ~host ?(port = default_port) ?(user = default_user)
+      ?(password = default_password) ?database f =
     let open Lwt.Syntax in
     let* () =
       Logs_lwt.debug (fun m ->
@@ -22,8 +26,9 @@ module T = struct
     in
     Pgx_lwt_unix.with_conn ~host ~port ~user ~password ?database f
 
-  let with_transaction ~host ~port ~user ~password ?database f =
-    with_conn ~host ~port ~user ~password ?database (fun conn ->
+  let with_transaction ~host ?(port = default_port) ?user ?password ?database f
+      =
+    with_conn ~host ~port ?user ?password ?database (fun conn ->
         Pgx_lwt_unix.with_transaction conn f)
 
   let database_exists ~conn database =
@@ -38,9 +43,9 @@ module T = struct
     in
     result |> List.hd |> List.hd |> Pgx.Value.to_bool_exn
 
-  let up ~host ~port ~user ~password ~database migration =
+  let up ~host ?(port = default_port) ?user ?password ~database migration =
     let open Lwt.Syntax in
-    with_transaction ~host ~port ~user ~password ~database (fun conn ->
+    with_transaction ~host ~port ?user ?password ~database (fun conn ->
         let version = migration.Omigrate.Migration.version in
         let* () =
           Logs_lwt.info (fun m -> m "Applying up migration %Ld" version)
@@ -63,9 +68,10 @@ module T = struct
           ^ quote_statement migrations_table
           ^ " (version, dirty) VALUES ($1, $2);"))
 
-  let down ~host ~port ~user ~password ~database ?previous migration =
+  let down ~host ?(port = default_port) ?user ?password ~database ?previous
+      migration =
     let open Lwt.Syntax in
-    with_transaction ~host ~port ~user ~password ~database (fun conn ->
+    with_transaction ~host ~port ?user ?password ~database (fun conn ->
         let version = migration.Omigrate.Migration.version in
         let* () =
           Logs_lwt.info (fun m -> m "Applying down migration %Ld" version)
@@ -96,10 +102,10 @@ module T = struct
               ^ quote_statement migrations_table
               ^ " (version, dirty) VALUES ($1, $2);"))
 
-  let create ~host ~port ~user ~password database =
+  let create ~host ?(port = default_port) ?user ?password database =
     let open Lwt.Syntax in
     let* () =
-      with_conn ~host ~port ~user ~password (fun conn ->
+      with_conn ~host ~port ?user ?password (fun conn ->
           let* database_exists = database_exists ~conn database in
           if database_exists then
             Logs_lwt.info (fun m -> m "Database already exists")
@@ -108,12 +114,12 @@ module T = struct
             Pgx_lwt_unix.execute_unit conn
               ("CREATE DATABASE " ^ quote_statement database ^ ";"))
     in
-    with_conn ~host ~port ~user ~password ~database (fun conn ->
+    with_conn ~host ~port ?user ?password ~database (fun conn ->
         ensure_version_table_exists ~conn)
 
-  let drop ~host ~port ~user ~password database =
+  let drop ~host ?(port = default_port) ?user ?password database =
     let open Lwt.Syntax in
-    with_conn ~host ~port ~user ~password (fun conn ->
+    with_conn ~host ~port ?user ?password (fun conn ->
         let* database_exists = database_exists ~conn database in
         if not database_exists then
           Logs_lwt.info (fun m -> m "Database does not exists")
@@ -122,13 +128,13 @@ module T = struct
           Pgx_lwt_unix.execute_unit conn
             ("DROP DATABASE " ^ quote_statement database ^ ";"))
 
-  let version ~host ~port ~user ~password ~database () =
-    with_conn ~host ~port ~user ~password ~database (fun conn ->
+  let version ~host ?(port = default_port) ?user ?password ~database () =
+    with_conn ~host ~port ?user ?password ~database (fun conn ->
         let open Lwt.Syntax in
         let* () = Logs_lwt.debug (fun m -> m "Querying all versions") in
         let+ result =
           Pgx_lwt_unix.execute conn
-            ("SELECT (version, dirty) FROM "
+            ("SELECT version, dirty FROM "
             ^ quote_statement migrations_table
             ^ " LIMIT 1;")
         in
@@ -136,6 +142,23 @@ module T = struct
         | [ [ version; dirty ] ] ->
             Some (Pgx.Value.to_int64_exn version, Pgx.Value.to_bool_exn dirty)
         | _ -> None)
+
+  let parse_uri s =
+    let module Omigrate_error = Omigrate.Error in
+    let module Connection = Omigrate.Driver.Connection in
+    let uri = Uri.of_string s in
+    let host = Uri.host_with_default uri in
+    let user = Uri.user uri in
+    let pass = Uri.password uri in
+    let port = Uri.port uri in
+    let db_result =
+      match Uri.path uri with
+      | "/" -> Error (Omigrate_error.bad_uri s)
+      | path ->
+          if Filename.dirname path <> "/" then Error (Omigrate_error.bad_uri s)
+          else Ok (Filename.basename path)
+    in
+    Result.map (fun db -> Connection.{ host; user; pass; port; db }) db_result
 end
 
 let () =

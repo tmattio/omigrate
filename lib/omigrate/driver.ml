@@ -1,18 +1,28 @@
+module Connection = struct
+  type t = {
+    host : string;
+    user : string option;
+    pass : string option;
+    port : int option;
+    db : string;
+  }
+end
+
 module type S = sig
   val up :
     host:string ->
-    port:int ->
-    user:string ->
-    password:string ->
+    ?port:int ->
+    ?user:string ->
+    ?password:string ->
     database:string ->
     Migration.t ->
     unit Lwt.t
 
   val down :
     host:string ->
-    port:int ->
-    user:string ->
-    password:string ->
+    ?port:int ->
+    ?user:string ->
+    ?password:string ->
     database:string ->
     ?previous:Migration.t ->
     Migration.t ->
@@ -20,28 +30,30 @@ module type S = sig
 
   val create :
     host:string ->
-    port:int ->
-    user:string ->
-    password:string ->
+    ?port:int ->
+    ?user:string ->
+    ?password:string ->
     string ->
     unit Lwt.t
 
   val drop :
     host:string ->
-    port:int ->
-    user:string ->
-    password:string ->
+    ?port:int ->
+    ?user:string ->
+    ?password:string ->
     string ->
     unit Lwt.t
 
   val version :
     host:string ->
-    port:int ->
-    user:string ->
-    password:string ->
+    ?port:int ->
+    ?user:string ->
+    ?password:string ->
     database:string ->
     unit ->
     (int64 * bool) option Lwt.t
+
+  val parse_uri : string -> (Connection.t, Omigrate_error.t) result
 end
 
 let drivers = Hashtbl.create 1
