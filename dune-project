@@ -31,4 +31,6 @@
   fmt
   ; Postgres Driver
   pgx
-  pgx_lwt_unix))
+  pgx_lwt_unix
+  ; Sqlite3 Driver
+  sqlite3))

@@ -5,3 +5,11 @@
  (modules postgres)
  (flags
   (:standard -linkall)))
+
+(library
+ (name omigrate_sqlite3)
+ (public_name omigrate.sqlite3)
+ (libraries omigrate logs lwt.unix sqlite3)
+ (modules sqlite_3)
+ (flags
+  (:standard -linkall)))
