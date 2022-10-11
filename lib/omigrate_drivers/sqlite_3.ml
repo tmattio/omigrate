@@ -98,7 +98,9 @@ module T = struct
 
   let ensure_version_table_exists t =
     let open Lwt.Syntax in
-    let* () = Logs_lwt.info (fun m -> m "Creating the migration table") in
+    let* () =
+      Logs_lwt.info (fun m -> m "Creating the migration table if not exists")
+    in
     let stmt =
       Sqlite3.prepare t.Db.db
         ("CREATE TABLE IF NOT EXISTS "
