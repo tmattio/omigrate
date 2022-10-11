@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>T (omigrate.Omigrate_sqlite3.Sqlite_3.T)</title><link rel="stylesheet" href="../../../../odoc.css"/><meta charset="utf-8"/><meta name="generator" content="odoc 2.1.1"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><script src="../../../../highlight.pack.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body class="odoc"><nav class="odoc-nav"><a href="../index.html">Up</a> – <a href="../../../index.html">omigrate</a> &#x00BB; <a href="../../index.html">Omigrate_sqlite3</a> &#x00BB; <a href="../index.html">Sqlite_3</a> &#x00BB; T</nav><header class="odoc-preamble"><h1>Module <code><span>Sqlite_3.T</span></code></h1></header><div class="odoc-content"><div class="odoc-spec"><div class="spec value" id="val-migrations_table" class="anchored"><a href="#val-migrations_table" class="anchor"></a><code><span><span class="keyword">val</span> migrations_table : string</span></code></div></div><div class="odoc-spec"><div class="spec value" id="val-quote_statement" class="anchored"><a href="#val-quote_statement" class="anchor"></a><code><span><span class="keyword">val</span> quote_statement : <span>string <span class="arrow">&#45;&gt;</span></span> string</span></code></div></div><div class="odoc-spec"><div class="spec value" id="val-to_opt_pair" class="anchored"><a href="#val-to_opt_pair" class="anchor"></a><code><span><span class="keyword">val</span> to_opt_pair : <span><span><span class="type-var">'a</span> option</span> <span class="arrow">&#45;&gt;</span></span> <span><span><span class="type-var">'b</span> option</span> <span class="arrow">&#45;&gt;</span></span> <span><span>(<span class="type-var">'c</span> * <span class="type-var">'d</span>)</span> option</span></span></code></div></div><div class="odoc-spec"><div class="spec value" id="val-database_exists" class="anchored"><a href="#val-database_exists" class="anchor"></a><code><span><span class="keyword">val</span> database_exists : <span>string <span class="arrow">&#45;&gt;</span></span> <span>bool <span class="xref-unresolved">Lwt</span>.t</span></span></code></div></div><div class="odoc-spec"><div class="spec value" id="val-delete_database" class="anchored"><a href="#val-delete_database" class="anchor"></a><code><span><span class="keyword">val</span> delete_database : <span>string <span class="arrow">&#45;&gt;</span></span> <span>unit <span class="xref-unresolved">Lwt</span>.t</span></span></code></div></div><div class="odoc-spec"><div class="spec value" id="val-ensure_version_table_exists" class="anchored"><a href="#val-ensure_version_table_exists" class="anchor"></a><code><span><span class="keyword">val</span> ensure_version_table_exists : <span><a href="../Db/index.html#type-t">Db.t</a> <span class="arrow">&#45;&gt;</span></span> <span>unit <span class="xref-unresolved">Lwt</span>.t</span></span></code></div></div><div class="odoc-spec"><div class="spec value" id="val-up" class="anchored"><a href="#val-up" class="anchor"></a><code><span><span class="keyword">val</span> up : 
+  <span>host:<span class="type-var">'a</span> <span class="arrow">&#45;&gt;</span></span>
+  <span>?port:<span class="type-var">'b</span> <span class="arrow">&#45;&gt;</span></span>
+  <span>?user:<span class="type-var">'c</span> <span class="arrow">&#45;&gt;</span></span>
+  <span>?password:<span class="type-var">'d</span> <span class="arrow">&#45;&gt;</span></span>
+  <span>database:string <span class="arrow">&#45;&gt;</span></span>
+  <span><a href="../../../Omigrate/Migration/index.html#type-t">Omigrate.Migration.t</a> <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="xref-unresolved">Lwt</span>.t</span></span></code></div></div><div class="odoc-spec"><div class="spec value" id="val-down" class="anchored"><a href="#val-down" class="anchor"></a><code><span><span class="keyword">val</span> down : 
+  <span>host:<span class="type-var">'a</span> <span class="arrow">&#45;&gt;</span></span>
+  <span>?port:<span class="type-var">'b</span> <span class="arrow">&#45;&gt;</span></span>
+  <span>?user:<span class="type-var">'c</span> <span class="arrow">&#45;&gt;</span></span>
+  <span>?password:<span class="type-var">'d</span> <span class="arrow">&#45;&gt;</span></span>
+  <span>database:string <span class="arrow">&#45;&gt;</span></span>
+  <span>?previous:<a href="../../../Omigrate/Migration/index.html#type-t">Omigrate.Migration.t</a> <span class="arrow">&#45;&gt;</span></span>
+  <span><a href="../../../Omigrate/Migration/index.html#type-t">Omigrate.Migration.t</a> <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="xref-unresolved">Lwt</span>.t</span></span></code></div></div><div class="odoc-spec"><div class="spec value" id="val-create" class="anchored"><a href="#val-create" class="anchor"></a><code><span><span class="keyword">val</span> create : 
+  <span>host:<span class="type-var">'a</span> <span class="arrow">&#45;&gt;</span></span>
+  <span>?port:<span class="type-var">'b</span> <span class="arrow">&#45;&gt;</span></span>
+  <span>?user:<span class="type-var">'c</span> <span class="arrow">&#45;&gt;</span></span>
+  <span>?password:<span class="type-var">'d</span> <span class="arrow">&#45;&gt;</span></span>
+  <span>string <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="xref-unresolved">Lwt</span>.t</span></span></code></div></div><div class="odoc-spec"><div class="spec value" id="val-drop" class="anchored"><a href="#val-drop" class="anchor"></a><code><span><span class="keyword">val</span> drop : 
+  <span>host:<span class="type-var">'a</span> <span class="arrow">&#45;&gt;</span></span>
+  <span>?port:<span class="type-var">'b</span> <span class="arrow">&#45;&gt;</span></span>
+  <span>?user:<span class="type-var">'c</span> <span class="arrow">&#45;&gt;</span></span>
+  <span>?password:<span class="type-var">'d</span> <span class="arrow">&#45;&gt;</span></span>
+  <span>string <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="xref-unresolved">Lwt</span>.t</span></span></code></div></div><div class="odoc-spec"><div class="spec value" id="val-version" class="anchored"><a href="#val-version" class="anchor"></a><code><span><span class="keyword">val</span> version : 
+  <span>host:<span class="type-var">'a</span> <span class="arrow">&#45;&gt;</span></span>
+  <span>?port:<span class="type-var">'b</span> <span class="arrow">&#45;&gt;</span></span>
+  <span>?user:<span class="type-var">'c</span> <span class="arrow">&#45;&gt;</span></span>
+  <span>?password:<span class="type-var">'d</span> <span class="arrow">&#45;&gt;</span></span>
+  <span>database:string <span class="arrow">&#45;&gt;</span></span>
+  <span>unit <span class="arrow">&#45;&gt;</span></span>
+  <span><span><span>(int64 * bool)</span> option</span> <span class="xref-unresolved">Lwt</span>.t</span></span></code></div></div><div class="odoc-spec"><div class="spec value" id="val-parse_uri" class="anchored"><a href="#val-parse_uri" class="anchor"></a><code><span><span class="keyword">val</span> parse_uri : 
+  <span>string <span class="arrow">&#45;&gt;</span></span>
+  <span><span>( <a href="../../../Omigrate/Driver/Connection/index.html#type-t">Omigrate.Driver.Connection.t</a>,
+    <span>[ <span>`Bad_uri of string</span>
+    <span><span>| `Invalid_source</span> of string</span>
+    <span><span>| `Unknown_driver</span> of string</span> ]</span> )</span>
+    <span class="xref-unresolved">Stdlib</span>.result</span></span></code></div></div></div></body></html>
