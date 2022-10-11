@@ -1,27 +1,48 @@
 name: CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   build:
     name: Build and test
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        ocaml-version: ['4.14.0']
-    steps:
-      - uses: avsm/setup-ocaml@master
-        with:
-          ocaml-version: ${{ matrix.ocaml-version }}
 
-      - uses: actions/checkout@v2
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - macos-latest
+          - ubuntu-latest
+        ocaml-compiler:
+          - ocaml-base-compiler.4.14.0
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Use OCaml ${{ matrix.ocaml-compiler }}
+        uses: ocaml/setup-ocaml@v2
+        with:
+          ocaml-compiler: ${{ matrix.ocaml-compiler }}
+          dune-cache: ${{ matrix.os != 'macos-latest' }}
 
       - name: Install dependencies
         run: opam install --deps-only --with-test .
 
-      - name: Build
-        run: make build
+      - name: Install ocamlformat
+        run: opam install ocamlformat.0.21.0
 
-      - name: Check formatting
-        run: make format
+      - name: Build project
+        run: opam exec -- dune build @install
+
+      - name: Run tests
+        run: opam exec -- dune test
+
+      - name: Format code
+        run: opam exec -- dune build --auto-promote @fmt
+        if: runner.os == 'Linux'
