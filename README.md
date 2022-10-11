@@ -51,3 +51,7 @@ Delete the database.
 ## Contributing
 
 Take a look at our [Contributing Guide](CONTRIBUTING.md).
+
+# Example
+
+An example of migrations that create `users` and `users_token` table for an authentication system is available in [example](./example)
