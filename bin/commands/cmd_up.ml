@@ -1,6 +1,7 @@
 (* open Omigrate *)
 
-let run ~source ~database = Omigrate.up ~source ~database |> Lwt_main.run
+let run ~force ~source ~database =
+  Omigrate.up ~force ~source ~database () |> Lwt_main.run
 
 (* Command line interface *)
 
@@ -25,7 +26,8 @@ let term =
   let open Common.Let_syntax in
   let+ _term = Common.term
   and+ source = Common.source_arg
-  and+ database = Common.database_arg in
-  run ~source ~database |> Common.handle_errors
+  and+ database = Common.database_arg
+  and+ force = Common.force_arg in
+  run ~force ~source ~database |> Common.handle_errors
 
 let cmd = Cmd.v info term
