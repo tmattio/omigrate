@@ -18,16 +18,33 @@ let db_version ~database =
         ?password:conninfo.Connection.pass ~database:conninfo.Connection.db ()
       |> Lwt_result.ok)
 
+let fetch_version (module Driver : Driver.S) ~bound force conninfo =
+  let open Lwt.Syntax in
+  if not force then
+    let* result =
+      Driver.version ~host:conninfo.Connection.host
+        ?port:conninfo.Connection.port ?user:conninfo.Connection.user
+        ?password:conninfo.Connection.pass ~database:conninfo.Connection.db ()
+    in
+    match result with
+    | Some (version, _) -> Lwt.return_ok version
+    | None -> Lwt.return_ok Int64.zero
+  else Lwt.return_ok bound
+
 let source_versions ~source =
   let open Std.Result.Syntax in
   let+ source = Source.of_string source in
   Source.versions source
 
-let up ~source ~database =
+let up ?(force = false) ~source ~database () =
   let open Lwt_result.Syntax in
   let* source_versions = source_versions ~source |> Lwt.return in
   with_driver database ~f:(fun (module Driver) conninfo ->
+      let* origin =
+        fetch_version ~bound:Int64.zero (module Driver) force conninfo
+      in
       source_versions
+      |> List.filter (fun s -> Int64.compare s.Migration.version origin > 0)
       |> List.sort (fun s1 s2 ->
              Int64.compare s1.Migration.version s2.Migration.version)
       |> List.fold_left
@@ -40,11 +57,15 @@ let up ~source ~database =
            (Lwt.return ())
       |> Lwt_result.ok)
 
-let down ~source ~database =
+let down ?(force = false) ~source ~database () =
   let open Lwt_result.Syntax in
   let* source_versions = source_versions ~source |> Lwt.return in
   with_driver database ~f:(fun (module Driver) conninfo ->
+      let* origin =
+        fetch_version ~bound:Int64.max_int (module Driver) force conninfo
+      in
       source_versions
+      |> List.filter (fun s -> Int64.compare s.Migration.version origin <= 0)
       |> List.sort (fun s1 s2 ->
              Int64.compare s1.Migration.version s2.Migration.version)
       |> List.rev

@@ -26,6 +26,13 @@ let database_arg =
     & opt (some string) None
     & info [ "database"; "d" ] ~docv:"DATABASE" ~doc ~env)
 
+let force_arg =
+  let doc =
+    "Force the action without worrying about the version in the migration \
+     table."
+  in
+  Arg.(value & flag & info [ "force"; "f" ] ~doc)
+
 let envs = []
 
 let term =
