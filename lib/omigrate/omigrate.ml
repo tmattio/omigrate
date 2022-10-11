@@ -1,3 +1,5 @@
+module Connection = Driver.Connection
+
 let with_driver ~f database =
   let open Lwt_result.Syntax in
   let* () =
@@ -6,14 +8,14 @@ let with_driver ~f database =
   in
   let* driver = Driver.load_from_uri database |> Lwt.return in
   let module D = (val driver) in
-  let* conninfo = Connection.parse_uri database |> Lwt.return in
+  let* conninfo = D.parse_uri database |> Lwt.return in
   f (module D : Driver.S) conninfo
 
 let db_version ~database =
   with_driver database ~f:(fun (module Driver) conninfo ->
       Driver.version ~host:conninfo.Connection.host
-        ~port:conninfo.Connection.port ~user:conninfo.Connection.user
-        ~password:conninfo.Connection.pass ~database:conninfo.Connection.db ()
+        ?port:conninfo.Connection.port ?user:conninfo.Connection.user
+        ?password:conninfo.Connection.pass ~database:conninfo.Connection.db ()
       |> Lwt_result.ok)
 
 let source_versions ~source =
@@ -32,8 +34,8 @@ let up ~source ~database =
            (fun acc s ->
              Lwt.bind acc (fun () ->
                  Driver.up ~host:conninfo.Connection.host
-                   ~port:conninfo.Connection.port ~user:conninfo.Connection.user
-                   ~password:conninfo.Connection.pass
+                   ?port:conninfo.Connection.port ?user:conninfo.Connection.user
+                   ?password:conninfo.Connection.pass
                    ~database:conninfo.Connection.db s))
            (Lwt.return ())
       |> Lwt_result.ok)
@@ -50,8 +52,8 @@ let down ~source ~database =
            (fun acc s ->
              Lwt.bind acc (fun () ->
                  Driver.down ~host:conninfo.Connection.host
-                   ~port:conninfo.Connection.port ~user:conninfo.Connection.user
-                   ~password:conninfo.Connection.pass
+                   ?port:conninfo.Connection.port ?user:conninfo.Connection.user
+                   ?password:conninfo.Connection.pass
                    ~database:conninfo.Connection.db s))
            (Lwt.return ())
       |> Lwt_result.ok)
@@ -59,14 +61,14 @@ let down ~source ~database =
 let create ~database =
   with_driver database ~f:(fun (module Driver) conninfo ->
       Driver.create ~host:conninfo.Connection.host
-        ~port:conninfo.Connection.port ~user:conninfo.Connection.user
-        ~password:conninfo.Connection.pass conninfo.Connection.db
+        ?port:conninfo.Connection.port ?user:conninfo.Connection.user
+        ?password:conninfo.Connection.pass conninfo.Connection.db
       |> Lwt_result.ok)
 
 let drop ~database =
   with_driver database ~f:(fun (module Driver) conninfo ->
-      Driver.drop ~host:conninfo.Connection.host ~port:conninfo.Connection.port
-        ~user:conninfo.Connection.user ~password:conninfo.Connection.pass
+      Driver.drop ~host:conninfo.Connection.host ?port:conninfo.Connection.port
+        ?user:conninfo.Connection.user ?password:conninfo.Connection.pass
         conninfo.Connection.db
       |> Lwt_result.ok)
 
@@ -76,21 +78,18 @@ module Migration = Migration
 module Driver : sig
   module type S
 
+  module Connection : sig
+    type t = Driver.Connection.t = {
+      host : string;
+      user : string option;
+      pass : string option;
+      port : int option;
+      db : string;
+    }
+  end
+
   val load : string -> ((module Driver.S), Error.t) Result.t
   val load_from_uri : string -> ((module Driver.S), Error.t) Result.t
   val register : string -> (module Driver.S) -> unit
 end =
   Driver
-
-module Connection : sig
-  type conninfo = {
-    host : string;
-    user : string;
-    pass : string;
-    port : int;
-    db : string;
-  }
-
-  val parse_uri : string -> (conninfo, Error.t) result
-end =
-  Connection
