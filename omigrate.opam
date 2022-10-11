@@ -18,6 +18,7 @@ depends: [
   "fmt"
   "pgx"
   "pgx_lwt_unix"
+  "sqlite3"
 ]
 build: [
   ["dune" "subst"] {pinned}

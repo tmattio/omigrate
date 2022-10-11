@@ -7,7 +7,9 @@ module T = struct
 
   let ensure_version_table_exists ~conn =
     let open Lwt.Syntax in
-    let* () = Logs_lwt.info (fun m -> m "Creating the migrations table") in
+    let* () =
+      Logs_lwt.info (fun m -> m "Creating the migrations table if not exists")
+    in
     Pgx_lwt_unix.execute_unit conn
       ("CREATE TABLE IF NOT EXISTS "
       ^ quote_statement migrations_table

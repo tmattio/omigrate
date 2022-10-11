@@ -7,6 +7,7 @@ Database migrations for Reason and OCaml
 ## Drivers
 
 - PosgreSQL (`omigrate.postgres`)
+- Sqlite3 (`omigrate.sqlite3`)
 
 ## Installation
 
@@ -47,6 +48,10 @@ Setup the database and run all the migrations.
 ### `omigrate drop --database DATABASE`
 
 Delete the database.
+
+## Examples
+
+The [example](example/README.md) provides some migrations available to test `omigrate` with the different drivers.
 
 ## Contributing
 
