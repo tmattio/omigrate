@@ -1,4 +1,4 @@
-(lang dune 2.0)
+(lang dune 3.0)
 
 (name omigrate)
 
@@ -22,6 +22,8 @@
  (depends
   (ocaml
    (>= 4.08.0))
+  (result
+    (>= 1.5))
   (lwt
    (>= 5.3.0))
   uri
@@ -33,4 +35,4 @@
   pgx
   pgx_lwt_unix
   ; Sqlite3 Driver
-  sqlite3))
+  (sqlite3 (>= 5.0.1))))
