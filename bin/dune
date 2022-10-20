@@ -1,7 +1,16 @@
 (executable
  (name main)
  (public_name omigrate)
- (libraries omigrate omigrate.postgres omigrate.sqlite3 cmdliner fmt fmt.tty
-   logs.fmt logs.cli lwt lwt.unix))
+ (libraries
+  omigrate
+  omigrate.postgres
+  omigrate.sqlite3
+  cmdliner
+  fmt
+  fmt.tty
+  logs.fmt
+  logs.cli
+  lwt
+  lwt.unix))
 
 (include_subdirs unqualified)
