@@ -1,3 +1,7 @@
+# Unreleased
+
+- Support driver listing (#8, @maiste)
+
 # 0.3.0 - 2022-10-11
 
 - Support partial migrations (#4, @maiste)
