@@ -112,5 +112,6 @@ module Driver : sig
   val load : string -> ((module Driver.S), Error.t) Result.t
   val load_from_uri : string -> ((module Driver.S), Error.t) Result.t
   val register : string -> (module Driver.S) -> unit
+  val list : unit -> string list
 end =
   Driver

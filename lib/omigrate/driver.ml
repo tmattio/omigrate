@@ -69,3 +69,4 @@ let load_from_uri s =
   | Some scheme -> load scheme
 
 let register scheme (module T : S) = Hashtbl.add drivers scheme (module T : S)
+let list () = Hashtbl.to_seq_keys drivers |> List.of_seq
