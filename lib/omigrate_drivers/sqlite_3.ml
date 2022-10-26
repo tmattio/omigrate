@@ -228,7 +228,9 @@ module T = struct
     let t = Db.create ~mode:`NO_CREATE database in
     let stmt =
       Sqlite3.prepare t.Db.db
-        ("SELECT version, dirty FROM " ^ quote_statement migrations_table)
+        ("SELECT version, dirty FROM "
+        ^ quote_statement migrations_table
+        ^ "ORDER BY version DESC LIMIT 1;")
     in
     match Db.query t stmt [] with
     | [ [ version; dirty ] ] ->
