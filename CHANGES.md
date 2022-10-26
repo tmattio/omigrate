@@ -1,6 +1,7 @@
-# Unreleased
+# 0.3.1 - 2022-10-26
 
 - Support driver listing (#8, @maiste)
+- Simplify migration to version 0.3 (#10, @maiste)
 
 # 0.3.0 - 2022-10-11
 
