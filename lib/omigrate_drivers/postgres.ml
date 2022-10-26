@@ -138,7 +138,7 @@ module T = struct
           Pgx_lwt_unix.execute conn
             ("SELECT version, dirty FROM "
             ^ quote_statement migrations_table
-            ^ " LIMIT 1;")
+            ^ "ORDER BY version DESC LIMIT 1;")
         in
         match result with
         | [ [ version; dirty ] ] ->
