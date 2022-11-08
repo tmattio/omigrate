@@ -32,7 +32,7 @@
   logs
   fmt
   ; Postgres Driver
-  pgx
+  (pgx (>= 2.2))
   pgx_lwt_unix
   ; Sqlite3 Driver
   (sqlite3 (>= 5.0.1))))

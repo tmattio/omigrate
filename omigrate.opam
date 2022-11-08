@@ -17,7 +17,7 @@ depends: [
   "cmdliner" {>= "1.1.0"}
   "logs"
   "fmt"
-  "pgx"
+  "pgx" {>= "2.2"}
   "pgx_lwt_unix"
   "sqlite3" {>= "5.0.1"}
   "odoc" {with-doc}
