@@ -33,3 +33,26 @@ Drop everything in the sqlite3 database
 Ensure only the schema_migration remain
   $ sqlite3 test.db ".tables"
   schema_migrations
+
+Execute migrations to postgresql database
+  $  omigrate setup -d "postgresql://postgres:postgres@localhost:5432/omigrate" -s ./postgres -vv
+  omigrate: [DEBUG] Loading the driver from the URI
+  omigrate: [DEBUG] Opening a conection on postgres://postgres:postgres@localhost:5432/
+  omigrate: [DEBUG] TLS-support is not compiled into this Pgx library, not attempting to upgrade
+  omigrate: [DEBUG] Querying existing databases
+  omigrate: [INFO] Creating the database
+  omigrate: [DEBUG] Opening a conection on postgres://postgres:postgres@localhost:5432/omigrate
+  omigrate: [DEBUG] TLS-support is not compiled into this Pgx library, not attempting to upgrade
+  omigrate: [INFO] Creating the migrations table if not exists
+  omigrate: [DEBUG] Loading the driver from the URI
+  omigrate: [DEBUG] Opening a conection on postgres://postgres:postgres@localhost:5432/omigrate
+  omigrate: [DEBUG] TLS-support is not compiled into this Pgx library, not attempting to upgrade
+  omigrate: [DEBUG] Querying all versions
+  omigrate: [DEBUG] Opening a conection on postgres://postgres:postgres@localhost:5432/omigrate
+  omigrate: [DEBUG] TLS-support is not compiled into this Pgx library, not attempting to upgrade
+  omigrate: [INFO] Applying up migration 20200424154423
+  omigrate: [DEBUG] Inserting version 20200424154423 in migration table
+  omigrate: [DEBUG] Opening a conection on postgres://postgres:postgres@localhost:5432/omigrate
+  omigrate: [DEBUG] TLS-support is not compiled into this Pgx library, not attempting to upgrade
+  omigrate: [INFO] Applying up migration 20200424154424
+  omigrate: [DEBUG] Inserting version 20200424154424 in migration table

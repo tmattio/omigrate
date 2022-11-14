@@ -21,6 +21,19 @@ jobs:
         ocaml-compiler:
           - ocaml-base-compiler.4.14.0
 
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -42,6 +55,7 @@ jobs:
 
       - name: Run tests
         run: opam exec -- dune test
+        if: matrix.os == 'ubuntu-latest'
 
       - name: Format code
         run: opam exec -- dune build --auto-promote @fmt
