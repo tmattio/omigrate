@@ -51,7 +51,7 @@ jobs:
         run: opam exec -- dune build @install
 
       - name: Run tests
-        run: opam exec -- dune test
+        run: GITHUB_TESTS=true opam exec -- dune test
 
       - name: Format code
         run: opam exec -- dune build --auto-promote @fmt
