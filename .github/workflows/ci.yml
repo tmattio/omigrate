@@ -7,17 +7,14 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
-    name: Build and test
+  build-linux:
+    name: Build & test - Linux
 
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
-        os:
-          - macos-latest
-          - ubuntu-latest
         ocaml-compiler:
           - ocaml-base-compiler.4.14.0
 
@@ -42,7 +39,7 @@ jobs:
         uses: ocaml/setup-ocaml@v2
         with:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
-          dune-cache: ${{ matrix.os != 'macos-latest' }}
+          dune-cache: ${{ runner.os != 'macOS' }}
 
       - name: Install dependencies
         run: opam install --deps-only --with-test .
@@ -55,8 +52,38 @@ jobs:
 
       - name: Run tests
         run: opam exec -- dune test
-        if: matrix.os == 'ubuntu-latest'
 
       - name: Format code
         run: opam exec -- dune build --auto-promote @fmt
-        if: runner.os == 'Linux'
+
+  build-macos:
+    name: Build - MacOS
+
+    runs-on: macos-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        ocaml-compiler:
+          - ocaml-base-compiler.4.14.0
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Use OCaml ${{ matrix.ocaml-compiler }}
+        uses: ocaml/setup-ocaml@v2
+        with:
+          ocaml-compiler: ${{ matrix.ocaml-compiler }}
+
+      - name: Install dependencies
+        run: opam install --deps-only --with-test .
+
+      - name: Install ocamlformat
+        run: opam install ocamlformat.0.21.0
+
+      - name: Build project
+        run: opam exec -- dune build @install
+
+
+
