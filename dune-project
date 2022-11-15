@@ -1,4 +1,6 @@
 (lang dune 3.0)
+(generate_opam_files true)
+(cram enable)
 
 (name omigrate)
 
@@ -6,14 +8,9 @@
  (github tmattio/omigrate))
 
 (documentation "https://tmattio.github.io/omigrate/")
-
 (license MIT)
-
 (authors "Thibaut Mattio")
-
 (maintainers "Thibaut Mattio")
-
-(generate_opam_files true)
 
 (package
  (name omigrate)
