@@ -1,0 +1,5 @@
+(cram
+ (applies_to example)
+ (enabled_if
+  (= true %{env:GITHUB_TESTS=false}))
+ (deps %{bin:omigrate}))

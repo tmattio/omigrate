@@ -58,6 +58,17 @@ module Db = struct
     bind t stmt values;
     exec_stmt t stmt
 
+  let exec_script t sql =
+    let rc = Sqlite3.exec t.db ~cb:(fun _ _ -> ()) sql in
+    match rc with
+    | Sqlite3.Rc.OK | Sqlite3.Rc.DONE -> ()
+    | err ->
+        let msg =
+          Printf.sprintf "Sqlite3 driver: [exec_stmt] [%s] %s"
+            (Sqlite3.Rc.to_string err) (Sqlite3.errmsg t.db)
+        in
+        failwith msg
+
   let query t stmt values =
     bind t stmt values;
     let results = ref [] in
@@ -119,8 +130,8 @@ module T = struct
           Logs_lwt.info (fun m -> m "Applying up migration %Ld" version)
         in
         let _ =
-          let stmt = Sqlite3.prepare t.Db.db migration.Omigrate.Migration.up in
-          Db.query t stmt []
+          let stmt = migration.Omigrate.Migration.up in
+          Db.exec_script t stmt
         in
         let* () =
           Logs_lwt.debug (fun m ->
@@ -157,10 +168,8 @@ module T = struct
           Logs_lwt.info (fun m -> m "Applying down migration %Ld" version)
         in
         let _ =
-          let stmt =
-            Sqlite3.prepare t.Db.db migration.Omigrate.Migration.down
-          in
-          Db.query t stmt []
+          let stmt = migration.Omigrate.Migration.down in
+          Db.exec_script t stmt
         in
         let* () =
           Logs_lwt.debug (fun m ->
