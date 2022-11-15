@@ -1,3 +1,7 @@
+# 0.3.2 - 2022-11-15
+
+- Various bug fixes (#12, #14, @maiste)
+
 # 0.3.1 - 2022-10-26
 
 - Support driver listing (#8, @maiste)
